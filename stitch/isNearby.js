@@ -7,12 +7,13 @@ exports = function(arg){
       { $near :
           {
             $geometry: { type: "Point",  coordinates: [ parseFloat(arg[0]), parseFloat(arg[1]) ] },
-            $minDistance: 1,
+            $minDistance: 0,
             $maxDistance: 3200
           }
       }
   }).toArray();
   bob.then(function(data) {
-    return {arg: bob};
+    console.log(JSON.stringify(data));
   });
+  return Promise.resolve(bob);
 };
