@@ -1,95 +1,96 @@
-import React from 'react';
-import { Button } from 'react-native';
+import * as React from 'react';
+import { Text, View, StyleSheet, TextInput, ImageBackground } from 'react-native';
+import driving from './driving.js';
 import {
   createStackNavigator,
 } from 'react-navigation';
-
-import { View } from 'react-native';
-
-var newLatitude = null;
-var newLongitude = null;
-
-function getlocation() {
-  if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(getCoordinates);
-  } else { 
-      alert("4");
-  }
-}
-
-function getCoordinates(position) {
-  currentLatitude = position.coords.latitude;
-  currentLongitude = position.coords.longitude; 
-
-  // now latitude and longitude are available
-  newLatitude=currentLatitude;
-  newLongitude=currentLongitude;
-}
+import { FooterTab } from 'native-base';
+import { Button, Avatar } from 'react-native-elements';
 
 
-const storeUserInfo = async () => {
-  try {
-    this._interval = setInterval(() => {
-      bob.callFunction("updatePos", [object1]).then(echoedResult => {
-        console.log(`Success!`);
-        console.log(echoedResult);   
-      })
-      // getlocation();
-      // console.log('latitude: '+newLatitude+'  longitude: '+newLongitude);
-    }
-    
-    
-    , 2000);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-const { Stitch, AnonymousCredential } = require('mongodb-stitch-react-native-sdk');
-var bob = null;
-Stitch.initializeDefaultAppClient('csdh-hcbvo').then(client => {
-    // use the client.
-    bob = client;
-    console.log(client);
-    console.log("logging in anonymously");
-client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
-  console.log(`logged in anonymously as user ${user.id}`)
-});
-});
-
-
-
-
-
-var object1 = {
-  loc : { type: "PointBitch", coordinates: [ -73.95, 40.75 ] },
-  name: "FuckingHereAsshole",
-  category : "WorkBitch"
-}
 
 
 class LogInScreen extends React.Component {
-    
   render() {
-
     const { navigate } = this.props.navigation;
     return (
-      <View>
-      <Button
-        title="Go to LogIn"
-        onPress={() =>
-          storeUserInfo()
+      <View style={styles.container}>
+        <ImageBackground 
+          source={require('./dudedrive.jpg')}
+          imageStyle={{resizeMode: 'cover'}}
+          style={styles.backgroundImage}
+        >
+          <View style={styles.container}>
+            {/* <Avatar
+              xlarge
+              rounded
+              source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"}}
+              onPress={() => console.log("Works!")}
+              activeOpacity={1}
+            /> */}
+            <TextInput style = {styles.input} 
+              autoCapitalize="none" 
+              onSubmitEditing={() => this.passwordInput.focus()} 
+              autoCorrect={false} 
+              keyboardType='email-address' 
+              returnKeyType="next"
+              placeholder='Email'
+              placeholderTextColor='black'
+            />
 
-        }
-      />
-      
+            <TextInput style = {styles.input}
+                  returnKeyType="go" 
+                  ref={(input)=> this.passwordInput = input}
+                  placeholder='Password'
+                  placeholderTextColor='black' 
+                  secureTextEntry
+            />
+            <Button style={styles.buttonContainer} title='Log In' 
+                        onPress={() => this.props.navigation.navigate('Driving')}>
+              <Text style={styles.buttonText}>LOGIN</Text>
+            </Button> 
+          </View>
+        </ImageBackground>
       </View>
-      
-      
     );
   }
 }
+/*
+
+class CoolBackgroundImage extends Component {
+  render() {
+
+  }
+}
+
+*/
+const styles = StyleSheet.create({
+    input:{
+        height: 40,
+        backgroundColor: 'rgba(255,255,255,0.5)',
+        marginBottom: 10,
+        marginLeft: 20,
+        marginRight: 20,
+        padding: 10,
+    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(25, 50, 60, .8)',
+  },
+    backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#34495e',
+  },
+});
 
 export default class App extends React.Component {
   render() {
@@ -97,13 +98,19 @@ export default class App extends React.Component {
   }
 }
 
-
 const StackNavigation = createStackNavigator({
-  Home: { screen: LogInScreen },
-  
-},
-{
-  initialRouteName: 'Home',
-}
+  Home: { screen: LogInScreen,
+    navigationOptions:  {
+      title: 'RiteWae' }},
+  Driving: { screen: driving,
+      navigationOptions:  {
+        title: 'Driving Mode',
+        headerLeft: null,
+        
+      }
+    }
+  },
+  {
+    initialRouteName: 'Home',
+  }
 );
-
