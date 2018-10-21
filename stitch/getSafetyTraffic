@@ -1,0 +1,12 @@
+exports = function(arg){
+  var apikey = '';
+
+  var url = 'https://apis.solarialabs.com/shine/v1/total-home-scores/reports?lat=' + arg[0].toString() + '&lon=' + arg[1].toString() + "&apikey=" + apikey;
+  const http = context.services.get("http-service");
+  return http
+    .get({ url: url})
+    .then(resp => {
+      data = JSON.parse(resp.body.text());
+      return [data.totalHomeScores.safety.value < 45, data.totalHomeScores.traffic.value < 45];
+    });
+};
