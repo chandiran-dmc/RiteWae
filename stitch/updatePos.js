@@ -1,5 +1,5 @@
 exports = function(arg){
-  // updates the user's current location in the database
+
   
   var collection = context.services.get("mongodb-atlas").db("CarReports").collection("Report");
 
@@ -15,6 +15,5 @@ exports = function(arg){
     }},
     {upsert: true}
   );
-  
-  return {arg: context.functions.execute("function0", arg.loc.coordinates[0], arg.loc.coordinates[1])};
+  return context.functions.execute("function0", [arg.loc.coordinates[0], arg.loc.coordinates[1]]);
 };
