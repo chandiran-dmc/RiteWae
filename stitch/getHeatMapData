@@ -1,0 +1,10 @@
+exports = function(arg){
+
+  var collection = context.services.get("mongodb-atlas").db("CarReports").collection("BigData");
+  var bob = collection.find({}).limit(100).toArray();
+  bob.then(function(data) {
+    console.log(JSON.stringify(data));
+  });
+
+  return Promise.resolve(bob);
+};
