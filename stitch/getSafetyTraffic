@@ -7,6 +7,6 @@ exports = function(arg){
     .get({ url: url})
     .then(resp => {
       data = JSON.parse(resp.body.text());
-      return [data.totalHomeScores.safety.value < 45, data.totalHomeScores.traffic.value < 45];
+      return [data.totalHomeScores.safety, data.totalHomeScores.traffic];
     });
 };
