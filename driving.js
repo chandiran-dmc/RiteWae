@@ -14,8 +14,6 @@ var banana = [];
 
 var newLatitude = 0;
 var newLongitude = 0;
-var safetyScore = 0;
-
 var bigData = [];
 
 // function storeUserInfo() {
@@ -83,6 +81,7 @@ export default class driving extends React.Component {
     this.currlat = 35.8451;
     this.currlong = -78.8987;
     this.state = {
+      safetyScore: 0,
       warn: {opacity: 0}
     }
   }
@@ -367,7 +366,7 @@ export default class driving extends React.Component {
         </Text>
         </Button>
         <Text style={this.state.warn}>Warning: Drive Safe!</Text>
-        <Progress.Circle style={styles.progress} size={90} progress={safetyScore} showsText={true} formatText={()=>'Safety'} color='white'/>
+        <Progress.Circle style={styles.progress} size={90} progress={this.state.safetyScore} showsText={true} formatText={()=>'Safety'} color='white'/>
       </View>
     );
   }
@@ -398,7 +397,6 @@ export default class driving extends React.Component {
   }
 
   warnPopup() {
-    console.log("WHAT?", this.state.warn);
     this.setState({warn: {
       position: "absolute",
       top: '20%',
@@ -424,7 +422,7 @@ export default class driving extends React.Component {
         opacity: 0,
         textAlign: 'center',
         fontSize: 20,
-        paddingTop: 30
+        paddingTop: 26
       }});
     },6000);
   }
@@ -440,8 +438,6 @@ export default class driving extends React.Component {
           }
         }
 
-        
-
         getlocation();
         
         function getCoordinates(position) {
@@ -453,11 +449,11 @@ export default class driving extends React.Component {
           newLongitude=currentLongitude;
         }
 
-        bob.callFunction("getSafetyTraffic", [newLatitude, newLongitude]).then(result => {
-          safetyScore = result[0];
+        bob.callFunction("getSafetyTraffic", [[this.currlat, this.currlong]]).then(result => {
+          this.setState({safetyScore: result[0]/100});
           console.log(result[0]);
         }).catch((data) => {
-
+          console.log(data, this.currlat, this.currlong);
         });
 
         // console.log('latitude: '+newLatitude+'  longitude: '+newLongitude);    
